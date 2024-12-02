@@ -6,6 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from './validation/validationSchema';
 import FormInput from '../../components/Form Components/FormInput';
 import PasswordField from '../../components/Form Components/PasswordField';
+import { Label } from '@radix-ui/react-label';
+import { Link } from 'react-router-dom';
+import { mobileStylesForForms } from '../login/Login';
 
 const Register: React.FC = () => {
   const {
@@ -30,9 +33,11 @@ const Register: React.FC = () => {
   return (
     <div className="mt-20 flex items-center justify-center font-anek-devanagari">
       <form className="w-full max-w-md" onSubmit={handleSubmit(onSubmit)}>
-        <Card className="flex flex-col gap-3 p-5">
+        <Card className={`flex flex-col gap-3 p-5 ${mobileStylesForForms}`}>
           <CardHeader>
-            <CardTitle className="mt-2 self-center text-xl">Sign Up</CardTitle>
+            <CardTitle className="mt-2 self-center text-xl max-[600px]:self-start max-[600px]:text-[30px]">
+              Sign Up
+            </CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -60,9 +65,17 @@ const Register: React.FC = () => {
               register={register('repeatPassword')}
               error={errors.repeatPassword?.message}
             />
+            <div className="mt-4 flex items-baseline justify-between">
+              <Label className="text-[14px] text-[gray]">
+                already have an account?
+              </Label>
+              <Link to={'/login'} className="font-anek-devanagari text-primary">
+                Sign In
+              </Link>
+            </div>
           </CardContent>
 
-          <Button className="self-center" size="xl" variant="default">
+          <Button className="w-[87%] self-center" variant="default">
             Sign Up
           </Button>
         </Card>
