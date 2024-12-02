@@ -31,7 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
           {...register}
           type={type}
           placeholder={placeholder}
-          className="flex-1 border-none pt-[7px] outline-none focus:border-transparent focus:outline-none focus:ring-0 focus-visible:outline-none max-[600px]:h-[45px]"
+          className="flex-1 border-none pt-[7px] outline-none focus:border-transparent focus:outline-none focus:ring-0 focus-visible:outline-none py-6 sm:p-3"
         />
       </div>
       {error && <span className="text-sm text-red-500">{error}</span>}

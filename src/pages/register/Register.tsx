@@ -31,11 +31,11 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="mt-20 flex items-center justify-center font-anek-devanagari">
+    <div className="mt-10 flex items-center justify-center font-anek-devanagari sm:mt-28">
       <form className="w-full max-w-md" onSubmit={handleSubmit(onSubmit)}>
         <Card className={`flex flex-col gap-3 p-5 ${mobileStylesForForms}`}>
           <CardHeader>
-            <CardTitle className="mt-2 self-center text-xl max-[600px]:self-start max-[600px]:text-[30px]">
+            <CardTitle className="mt-2 self-start text-3xl sm:self-center sm:text-xl">
               Sign Up
             </CardTitle>
           </CardHeader>
@@ -75,7 +75,7 @@ const Register: React.FC = () => {
             </div>
           </CardContent>
 
-          <Button className="w-[87%] self-center" variant="default">
+          <Button className="w-[87%] self-center p-6" variant="default">
             Sign Up
           </Button>
         </Card>

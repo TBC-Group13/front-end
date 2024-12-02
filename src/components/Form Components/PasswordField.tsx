@@ -44,7 +44,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
           {...register}
           type={!passwordHide ? 'password' : 'text'}
           placeholder={label}
-          className="flex-1 border-none pt-[7px] outline-none focus:ring-0 focus-visible:ring-0 max-[600px]:h-[45px]"
+          className="flex-1 border-none pt-3 outline-none focus:ring-0 focus-visible:ring-0 py-6 sm:p-3"
         />
         <PasswordToggle
           isVisible={passwordHide}
@@ -65,3 +65,4 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
 };
 
 export default PasswordField;
+
