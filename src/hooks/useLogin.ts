@@ -1,9 +1,9 @@
 import { useAtom } from 'jotai';
-import { errorAtom } from '../store/store'; 
-import { loginUser as apiLoginUser } from '../api/login'; 
+import { errorAtom } from '../store/store';
+import { loginUser as apiLoginUser } from '../api/login';
 
 interface FormData {
-  email: string;
+  identifier: string;
   password: string;
 }
 
@@ -13,7 +13,7 @@ export const useLogin = () => {
   const loginUser = async (data: FormData, onSuccess: () => void) => {
     try {
       const result = await apiLoginUser({
-        email: data.email,
+        identifier: data.identifier,
         password: data.password,
       });
 

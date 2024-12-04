@@ -7,7 +7,7 @@ import FormInput from '../../components/Form Components/FormInput';
 import PasswordField from '../../components/Form Components/PasswordField';
 import { validationSchema } from './validation';
 import { useNavigate } from 'react-router-dom';
-import { useLogin } from '../../hooks/useLogin'; // Adjust the path as necessary
+import { useLogin } from '../../hooks/useLogin';
 
 export const mobileStylesForForms = `border-white sm:border-neutral-200 shadow-none sm:shadow-lg`;
 
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   interface FormData {
-    email: string;
+    identifier: string; // This can be either username or email
     password: string;
   }
 
@@ -42,11 +42,11 @@ const Login: React.FC = () => {
 
           <CardContent className="pb-24 sm:pb-0">
             <FormInput
-              label="Email"
+              label="Username or Email"
               type="text"
-              placeholder="Email"
-              register={register('email')}
-              error={errors.email?.message}
+              placeholder="Username or Email"
+              register={register('identifier')}
+              error={errors.identifier?.message}
             />
             <PasswordField
               label="Password"

@@ -1,11 +1,11 @@
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 export const loginUser = async (userData: {
-  email: string;
+  identifier: string;
   password: string;
 }) => {
   try {
-    const response = await fetch(`${baseURL}/login`, {
+    const response = await fetch(`${baseURL}/login/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

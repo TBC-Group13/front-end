@@ -7,7 +7,7 @@ export const registerUser = async (userData: {
   repeat_password: string;
 }) => {
   try {
-    const response = await fetch(`${baseURL}/register`, {
+    const response = await fetch(`${baseURL}/register/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
