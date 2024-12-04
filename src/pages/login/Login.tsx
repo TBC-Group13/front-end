@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   interface FormData {
-    identifier: string; // This can be either username or email
+    identifier: string;
     password: string;
   }
 

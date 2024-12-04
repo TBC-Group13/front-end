@@ -8,10 +8,10 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 export const CreateQuestion = () => {
-  const [inputValue, setInputValue] = useState('');
+  // const [inputValue, setInputValue] = useState('');
   const tags = ['React', 'JS'];
   return (
     <div className="lg:mx-80 lg:mt-10">

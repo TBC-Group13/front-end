@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
-import { errorAtom } from '../store/store'; // Adjust the path as necessary
-import { registerUser as apiRegisterUser } from '../api/register'; // Adjust the path as necessary
+import { errorAtom } from '../store/store';
+import { registerUser as apiRegisterUser } from '../api/register';
 
 interface FormData {
   username: string;
