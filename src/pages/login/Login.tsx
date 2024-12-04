@@ -52,7 +52,6 @@ const Login: React.FC = () => {
               label="Password"
               register={register('password')}
               error={errors.password?.message}
-              showForgetPassword={true}
               showSignUpLink={true}
             />
           </CardContent>
