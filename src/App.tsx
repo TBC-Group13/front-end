@@ -7,6 +7,7 @@ import Header from './layout/Header';
 import BottomBar from './layout/BottomBar';
 import Profile from './pages/profile/Profile';
 import Liderboard from './pages/liderboard/Liderboard';
+import { CreateQuestion } from './pages/createQuestion';
 
 const App: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: React.FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/liderboard" element={<Liderboard />} />
+          <Route path="/createQuestion" element={<CreateQuestion />} />
         </Routes>
       </main>
       <BottomBar />
