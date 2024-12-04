@@ -10,7 +10,6 @@ interface PasswordFieldProps {
   label: string;
   register: UseFormRegisterReturn;
   error?: string;
-  showForgetPassword?: boolean;
   showSignUpLink?: boolean;
 }
 
@@ -18,7 +17,6 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
   label,
   register,
   error,
-  showForgetPassword = false,
   showSignUpLink = false,
 }) => {
   const [passwordHide, setPasswordHide] = useState(false);
@@ -31,7 +29,6 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
     <div className="mb-4 flex flex-col">
       <div className="mb-1 flex justify-between">
         <Label label={label} />
-        {showForgetPassword && <Label label="Forget password?" />}
       </div>
       <div
         className={`flex items-center rounded-md border px-3 ${
@@ -44,7 +41,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
           {...register}
           type={!passwordHide ? 'password' : 'text'}
           placeholder={label}
-          className="flex-1 border-none pt-3 outline-none focus:ring-0 focus-visible:ring-0 py-6 sm:p-3"
+          className="flex-1 border-none py-6 pt-3 outline-none focus:ring-0 focus-visible:ring-0 sm:p-3"
         />
         <PasswordToggle
           isVisible={passwordHide}
@@ -65,4 +62,3 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
 };
 
 export default PasswordField;
-

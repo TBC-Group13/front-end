@@ -6,6 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormInput from '../../components/Form Components/FormInput';
 import PasswordField from '../../components/Form Components/PasswordField';
 import { validationSchema } from './validation';
+import { useNavigate } from 'react-router-dom';
+import { useLogin } from '../../hooks/useLogin'; // Adjust the path as necessary
 
 export const mobileStylesForForms = `border-white sm:border-neutral-200 shadow-none sm:shadow-lg`;
 
@@ -16,22 +18,25 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
+  const { loginUser } = useLogin();
+  const navigate = useNavigate();
+
   interface FormData {
     email: string;
     password: string;
   }
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    await loginUser(data, () => navigate('/'));
   };
 
   return (
     <div className="mt-12 flex items-center justify-center font-anek-devanagari sm:mt-28">
       <form className="w-full max-w-md" onSubmit={handleSubmit(onSubmit)}>
-        <Card className={`flex flex-col gap-3 p-5 ${mobileStylesForForms} `}>
+        <Card className={`flex flex-col gap-3 p-5 ${mobileStylesForForms}`}>
           <CardHeader>
-            <CardTitle className="mt-2 self-center pb-20 text-3xl sm:pb-0 sm:text-xl">
-              Log in
+            <CardTitle className="mt-2 self-start text-3xl sm:self-center sm:text-xl">
+              Login
             </CardTitle>
           </CardHeader>
 
@@ -55,6 +60,7 @@ const Login: React.FC = () => {
           <Button
             className="w-[87%] self-center py-6 sm:py-3"
             variant="default"
+            type="submit"
           >
             Log In
           </Button>

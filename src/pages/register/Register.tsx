@@ -1,14 +1,21 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 import { validationSchema } from './validation/validationSchema';
 import FormInput from '../../components/Form Components/FormInput';
 import PasswordField from '../../components/Form Components/PasswordField';
 import { Label } from '@radix-ui/react-label';
 import { Link } from 'react-router-dom';
 import { mobileStylesForForms } from '../login/Login';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { useRegister } from '../../hooks/useRegister';
 
 const Register: React.FC = () => {
   const {
@@ -19,6 +26,9 @@ const Register: React.FC = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const { registerUser } = useRegister();
+  const navigate = useNavigate();
+
   interface FormData {
     username: string;
     email: string;
@@ -26,8 +36,8 @@ const Register: React.FC = () => {
     repeatPassword: string;
   }
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    await registerUser(data, () => navigate('/login'));
   };
 
   return (
@@ -75,7 +85,11 @@ const Register: React.FC = () => {
             </div>
           </CardContent>
 
-          <Button className="w-[87%] self-center p-6" variant="default">
+          <Button
+            className="w-[87%] self-center p-6"
+            variant="default"
+            type="submit"
+          >
             Sign Up
           </Button>
         </Card>
