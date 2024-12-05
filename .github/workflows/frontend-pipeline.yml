@@ -21,12 +21,12 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        cd ~/front-end
+        cd ${{ github.workspace }}
         npm install
 
     - name: Build Frontend
       run: |
-        cd ~/front-end
+        cd ${{ github.workspace }}
         npm run build
 
     - name: Deploy Frontend
