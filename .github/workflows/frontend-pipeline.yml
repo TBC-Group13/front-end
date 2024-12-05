@@ -22,13 +22,11 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install
+        npm install axios
       working-directory: ${{ github.workspace }}
 
     - name: Build Frontend
       run: |
-        yarn add react-query
-        yarn add @types/react-query
-        npm install axios
         npm run build
       working-directory: ${{ github.workspace }}
 
