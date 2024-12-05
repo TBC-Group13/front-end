@@ -21,7 +21,7 @@ export const useLogout = () => {
   const refreshMutation = useMutation(apiRefreshToken, {
     onSuccess: (data: TokenResponse) => {
       localStorage.setItem('accessToken', data.access);
-      logoutMutation.mutate();
+      logoutMutation.mutate(localStorage.getItem('refreshToken')!);
     },
     onError: (error: unknown) => {
       console.error('Error refreshing token:', error);
@@ -43,13 +43,13 @@ export const useLogout = () => {
   });
 
   const handleLogout = async () => {
-    const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
+    const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken && isTokenExpired(accessToken) && refreshToken) {
       refreshMutation.mutate(refreshToken);
-    } else {
-      logoutMutation.mutate();
+    } else if (refreshToken) {
+      logoutMutation.mutate(refreshToken);
     }
   };
 

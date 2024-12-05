@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const logoutUser = async () => {
+export const logoutUser = async (refreshToken: string) => {
   try {
-    const response = await axios.post(`${baseURL}/logout/`, {}, {
+    const response = await axios.post(`${baseURL}/logout/`, { refresh_token: refreshToken }, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -12,7 +12,11 @@ export const logoutUser = async () => {
 
     return response.data;
   } catch (error) {
-    console.error('Error logging out user:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 };

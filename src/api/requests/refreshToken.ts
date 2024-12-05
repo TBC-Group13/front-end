@@ -2,15 +2,22 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const refreshToken = async (refreshToken: string) => {
+interface RefreshTokenResponse {
+  access: string;
+}
+
+export const refreshToken = async (refreshToken: string): Promise<RefreshTokenResponse> => {
   try {
     const response = await axios.post(`${baseURL}/token/refresh/`, {
       refresh: refreshToken,
     });
-
     return response.data;
   } catch (error) {
-    console.error('Error refreshing token:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 };

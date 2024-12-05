@@ -12,7 +12,11 @@ export const registerUser = async (userData: {
     const response = await axios.post(`${baseURL}/register/`, userData);
     return response.data;
   } catch (error) {
-    console.error('Error registering user:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     throw error;
   }
 };

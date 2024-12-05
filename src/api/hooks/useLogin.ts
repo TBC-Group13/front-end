@@ -10,11 +10,14 @@ interface FormData {
   password: string;
 }
 
-interface TokenResponse {
+interface LoginResponse {
   tokens: {
     access: string;
     refresh: string;
   };
+}
+
+interface RefreshTokenResponse {
   access: string;
 }
 
@@ -22,8 +25,8 @@ export const useLogin = () => {
   const [, setError] = useAtom(errorAtom);
   const [, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
-  const loginMutation = useMutation(apiLoginUser, {
-    onSuccess: (data: TokenResponse) => {
+  const loginMutation = useMutation<LoginResponse, unknown, FormData>(apiLoginUser, {
+    onSuccess: (data) => {
       setError(null);
       localStorage.setItem('accessToken', data.tokens.access);
       localStorage.setItem('refreshToken', data.tokens.refresh);
@@ -35,8 +38,8 @@ export const useLogin = () => {
     },
   });
 
-  const refreshMutation = useMutation(apiRefreshToken, {
-    onSuccess: (data: { access: string }) => {
+  const refreshMutation = useMutation<RefreshTokenResponse, unknown, string>(apiRefreshToken, {
+    onSuccess: (data) => {
       setError(null);
       localStorage.setItem('accessToken', data.access);
     },

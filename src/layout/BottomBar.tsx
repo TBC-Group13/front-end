@@ -19,7 +19,7 @@ const BottomBar: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <footer className="flex justify-around rounded-t-3xl bg-[#F3F2F1] py-3 lg:hidden">
+    <footer className="fixed bottom-0 flex w-full justify-around rounded-t-3xl bg-[#F3F2F1] py-3 lg:hidden">
       <Link to="/">
         <button
           className={`flex cursor-pointer flex-col items-center ${
