@@ -18,7 +18,7 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const { loginUser } = useLogin();
+  const { loginUser, isLoading } = useLogin();
   const navigate = useNavigate();
 
   interface FormData {
@@ -60,6 +60,7 @@ const Login: React.FC = () => {
             className="w-[87%] self-center py-6 sm:py-3"
             variant="default"
             type="submit"
+            disabled={isLoading}
           >
             Log In
           </Button>

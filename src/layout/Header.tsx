@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLogout } from '../hooks/useLogout';
 
 const Header: React.FC = () => {
+  const isAuthenticated = !!localStorage.getItem('accessToken');
+  const { handleLogout } = useLogout();
+
   return (
     <header className="hidden bg-gray-100 p-4 shadow-md lg:block">
       <nav className="mx-20">
@@ -22,24 +26,35 @@ const Header: React.FC = () => {
             </li>
           </div>
           <div className="flex items-center space-x-4">
-            <li>
-              <Link to="/profile" className="text-blue-500 hover:text-blue-700">
-                Profile
-              </Link>
-            </li>
-            <li>
-              <Link to="/login" className="text-blue-500 hover:text-blue-700">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/register"
-                className="text-blue-500 hover:text-blue-700"
-              >
-                Register
-              </Link>
-            </li>
+            {isAuthenticated ? (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
           </div>
         </ul>
       </nav>

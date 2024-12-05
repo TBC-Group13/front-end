@@ -26,7 +26,7 @@ const Register: React.FC = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { registerUser } = useRegister();
+  const { registerUser, isLoading } = useRegister();
   const navigate = useNavigate();
 
   interface FormData {
@@ -89,6 +89,7 @@ const Register: React.FC = () => {
             className="w-[87%] self-center p-6"
             variant="default"
             type="submit"
+            disabled={isLoading}
           >
             Sign Up
           </Button>

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 export const registerUser = async (userData: {
@@ -7,19 +9,8 @@ export const registerUser = async (userData: {
   repeat_password: string;
 }) => {
   try {
-    const response = await fetch(`${baseURL}/register/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    return await response.json();
+    const response = await axios.post(`${baseURL}/register/`, userData);
+    return response.data;
   } catch (error) {
     console.error('Error registering user:', error);
     throw error;
