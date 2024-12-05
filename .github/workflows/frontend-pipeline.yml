@@ -19,25 +19,39 @@ jobs:
       with:
         node-version: '22.10.0'
 
-    - name: Install Dependencies
-      run: |
-        npm install
-      working-directory: ${{ github.workspace }}
-
-    - name: Build Frontend
-      run: |
-        npm run build
-      working-directory: ${{ github.workspace }}
-
     - name: Set up SSH and Deploy with ssh-agent
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-       
+
     - name: Configure SSH
       run: |
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} "sudo systemctl reload nginx" 
+
+    - name: SSH into server and pull the latest code
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
+          cd ~/front-end
+          git pull origin main
+        EOF
+
+    - name: Install Dependencies on Server
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
+          cd ~/front-end
+          npm install
+        EOF
+
+    - name: Build Frontend on Server
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
+          cd ~/front-end
+          npm run build
+        EOF
+
+    - name: Reload Nginx to serve new build
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} "sudo systemctl reload nginx"
