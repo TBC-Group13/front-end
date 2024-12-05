@@ -15,7 +15,7 @@ import {
   CardContent,
 } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
-import { useRegister } from '../../hooks/useRegister';
+import { useRegister } from '../../api/hooks/useRegister';
 
 const Register: React.FC = () => {
   const {

@@ -1,9 +1,9 @@
 import { useMutation } from 'react-query';
 import { useAtom } from 'jotai';
-import { errorAtom } from '../store/store';
-import { loginUser as apiLoginUser } from '../api/login';
-import { refreshToken as apiRefreshToken } from '../api/refreshToken';
-import { isAuthenticatedAtom } from '../store/authAtoms';
+import { errorAtom } from '../../store/store';
+import { loginUser as apiLoginUser } from '../requests/login';
+import { refreshToken as apiRefreshToken } from '../requests/refreshToken';
+import { isAuthenticatedAtom } from '../../store/authAtoms';
 
 interface FormData {
   identifier: string;

@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 import { useAtom } from 'jotai';
-import { errorAtom } from '../store/store';
-import { registerUser as apiRegisterUser } from '../api/register';
+import { errorAtom } from '../../store/store';
+import { registerUser as apiRegisterUser } from '../requests/register';
 
 interface FormData {
   username: string;

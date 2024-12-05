@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLogout } from '../hooks/useLogout';
+import { useLogout } from '../api/hooks/useLogout';
 
 const Header: React.FC = () => {
   const isAuthenticated = !!localStorage.getItem('accessToken');

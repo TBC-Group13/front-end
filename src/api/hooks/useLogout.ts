@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useAtom } from 'jotai';
-import { logoutUser as apiLogoutUser } from '../api/logout';
-import { refreshToken as apiRefreshToken } from '../api/refreshToken';
-import { isAuthenticatedAtom } from '../store/authAtoms';
+import { logoutUser as apiLogoutUser } from '../requests/logout';
+import { refreshToken as apiRefreshToken } from '../requests/refreshToken';
+import { isAuthenticatedAtom } from '../../store/authAtoms';
 
 const isTokenExpired = (token: string) => {
   const payload = JSON.parse(atob(token.split('.')[1]));

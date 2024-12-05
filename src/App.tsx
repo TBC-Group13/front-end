@@ -10,7 +10,7 @@ import Register from './pages/register/Register';
 import Profile from './pages/profile/Profile';
 import Liderboard from './pages/liderboard/Liderboard';
 import { CreateQuestion } from './pages/createQuestion';
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from './api/hooks/useAuth';
 import ProtectedRoute from './guard/ProtectedRoute';
 import PublicRoute from './guard/PublicRoute';
 
