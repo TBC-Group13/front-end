@@ -21,15 +21,17 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        cd ${{ github.workspace }}
         npm install
+      working-directory: ${{ github.workspace }}
 
     - name: Build Frontend
       run: |
-        cd ${{ github.workspace }}
         npm run build
+      working-directory: ${{ github.workspace }}
 
     - name: Deploy Frontend
       run: |
         sudo systemctl reload nginx
+
+
 
