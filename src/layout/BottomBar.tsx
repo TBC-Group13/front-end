@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const BottomBar: React.FC = () => {
   const location = useLocation();
   const [activeButton, setActiveButton] = useState<string>('');
+  const isAuthenticated = !!localStorage.getItem('accessToken');
 
   useEffect(() => {
     const path = location.pathname;
@@ -18,8 +19,12 @@ const BottomBar: React.FC = () => {
     }
   }, [location.pathname]);
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
-    <footer className="fixed bottom-0 flex w-full justify-around rounded-t-3xl bg-[#F3F2F1] py-3 lg:hidden">
+    <div className="fixed bottom-0 flex w-full justify-around rounded-t-3xl bg-[#F3F2F1] py-3 lg:hidden">
       <Link to="/">
         <button
           className={`flex cursor-pointer flex-col items-center ${
@@ -93,7 +98,7 @@ const BottomBar: React.FC = () => {
           </span>
         </button>
       </Link>
-    </footer>
+    </div>
   );
 };
 

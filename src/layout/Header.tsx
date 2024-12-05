@@ -6,6 +6,10 @@ const Header: React.FC = () => {
   const isAuthenticated = !!localStorage.getItem('accessToken');
   const { handleLogout } = useLogout();
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <header className="hidden bg-gray-100 p-4 shadow-md lg:block">
       <nav className="mx-20">

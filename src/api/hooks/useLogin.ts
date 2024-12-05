@@ -1,4 +1,5 @@
 import { useMutation } from 'react-query';
+import axios from 'axios';
 import { useAtom } from 'jotai';
 import { errorAtom } from '../../store/store';
 import { loginUser as apiLoginUser } from '../requests/login';
@@ -26,20 +27,24 @@ export const useLogin = () => {
   const [, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
   const loginMutation = useMutation<LoginResponse, unknown, FormData>(apiLoginUser, {
-    onSuccess: (data) => {
+    onSuccess: (data: LoginResponse) => {
       setError(null);
       localStorage.setItem('accessToken', data.tokens.access);
       localStorage.setItem('refreshToken', data.tokens.refresh);
       setIsAuthenticated(true);
     },
     onError: (error: unknown) => {
-      setError('Error logging in user');
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        setError('Identifier or password is incorrect');
+      } else {
+        setError('Error logging in user');
+      }
       console.error('Error logging in user:', error);
     },
   });
 
   const refreshMutation = useMutation<RefreshTokenResponse, unknown, string>(apiRefreshToken, {
-    onSuccess: (data) => {
+    onSuccess: (data: RefreshTokenResponse) => {
       setError(null);
       localStorage.setItem('accessToken', data.access);
     },
