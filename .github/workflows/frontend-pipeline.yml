@@ -29,10 +29,14 @@ jobs:
         npm run build
       working-directory: ${{ github.workspace }}
 
+
     - name: Deploy Frontend
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
-        mkdir -p ~/.ssh  # Ensure .ssh directory exists
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa  # Write private key
-        chmod 600 ~/.ssh/id_rsa  # Set permissions
-        ssh-keyscan -H 172.31.40.45 >> ~/.ssh/known_hosts  # Add server to known hosts
+        set -x  # Debugging mode
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 172.31.40.45 >> ~/.ssh/known_hosts
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@172.31.40.45 "sudo systemctl reload nginx"
