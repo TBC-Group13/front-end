@@ -10,29 +10,37 @@ interface FormData {
   password: string;
 }
 
+interface TokenResponse {
+  tokens: {
+    access: string;
+    refresh: string;
+  };
+  access: string;
+}
+
 export const useLogin = () => {
   const [, setError] = useAtom(errorAtom);
   const [, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
   const loginMutation = useMutation(apiLoginUser, {
-    onSuccess: (data) => {
+    onSuccess: (data: TokenResponse) => {
       setError(null);
       localStorage.setItem('accessToken', data.tokens.access);
       localStorage.setItem('refreshToken', data.tokens.refresh);
       setIsAuthenticated(true);
     },
-    onError: (error) => {
+    onError: (error: unknown) => {
       setError('Error logging in user');
       console.error('Error logging in user:', error);
     },
   });
 
   const refreshMutation = useMutation(apiRefreshToken, {
-    onSuccess: (data) => {
+    onSuccess: (data: { access: string }) => {
       setError(null);
       localStorage.setItem('accessToken', data.access);
     },
-    onError: (error) => {
+    onError: (error: unknown) => {
       setError('Error refreshing token');
       console.error('Error refreshing token:', error);
     },
