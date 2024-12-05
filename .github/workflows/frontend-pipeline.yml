@@ -23,6 +23,8 @@ jobs:
       run: |
         npm install
         npm install axios
+        yarn add react-query
+        yarn add @types/react-query
       working-directory: ${{ github.workspace }}
 
     - name: Build Frontend
