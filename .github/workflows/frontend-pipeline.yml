@@ -30,10 +30,7 @@ jobs:
       working-directory: ${{ github.workspace }}
 
     - name: Deploy Frontend
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
-        set -x  # Enable debugging
         mkdir -p ~/.ssh  # Ensure .ssh directory exists
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa  # Write private key
         chmod 600 ~/.ssh/id_rsa  # Set permissions
