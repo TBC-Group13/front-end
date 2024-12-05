@@ -27,14 +27,24 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="text-blue-500 hover:text-blue-700"
-                >
-                  Logout
-                </button>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
             ) : (
               <>
                 <li>
