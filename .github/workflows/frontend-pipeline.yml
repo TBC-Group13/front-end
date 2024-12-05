@@ -36,19 +36,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
           cd ~/front-end
           git pull origin main
-        EOF
-
-    - name: Install Dependencies on Server
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
-          cd ~/front-end
           npm install
-        EOF
-
-    - name: Build Frontend on Server
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
-          cd ~/front-end
           npm run build
         EOF
 
