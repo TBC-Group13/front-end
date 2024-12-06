@@ -1,17 +1,19 @@
 import listEmpty from '@/assets/list-empty.png';
 import Question from "../Question";
 import { FC } from 'react';
-
-const questionsData = [{}, {}, {}, {}, {}];
+import { useQuery } from 'react-query';
+import { fetchQuestions } from '@/api/requests/getQuestions';
 
 const HomeQuestions: FC<{isButtonActive: boolean}> = ({isButtonActive}) => {
+  const {data} = useQuery({queryKey: ["questions"], queryFn: fetchQuestions})
+  console.log(data?.length)
   return (
     <div>
-        {questionsData.length !== 0 ? (
+        {data?.length !== 0 ? (
         <div className="flex flex-col gap-y-5 rounded-xl bg-gray-100 p-5">
           {/*@ts-ignore */}
-          {questionsData.map((items, index) => (
-            <Question key={index} />
+          {data?.map((items, index) => (
+            <Question data={data} index={index} key={index} />
           ))}
         </div>
       ) : isButtonActive ? (

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-interface RefreshTokenResponse {
+export interface RefreshTokenResponse {
   access: string;
 }
 
