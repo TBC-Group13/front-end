@@ -37,10 +37,18 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
        
-    # CD Step - Deploy to Server
-    - name: Deploy Frontend to Server
+    - name: Configure SSH
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@${{ secrets.SSH_HOST }} 'cd /home/ubuntu/front-end && git pull origin main && npm install && npm run build && sudo systemctl reload nginx'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      working-directory: ${{ github.workspace }}
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        
+        # Add 'cd' step to navigate to frontend directory
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
+          cd /home/ubuntu/front-end && \
+          git pull origin main && \
+          npm install && \
+          npm run build && \
+          sudo systemctl reload nginx
+        EOF
