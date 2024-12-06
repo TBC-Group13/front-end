@@ -53,7 +53,7 @@ jobs:
           npm install && \
           npm install axios && \
           yarn add react-query && \
-          yarn add @types/react-qu && \
+          yarn add @types/react-query && \
           npm run build && \
           sudo systemctl reload nginx
         EOF
