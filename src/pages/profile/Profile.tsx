@@ -93,12 +93,12 @@ export default function Profile() {
             </span>
           </div>
 
-          <div className="py-4">
+          <div className="py-4 lg:hidden">
             <div className="border-b border-gray-300 py-4">
               <button
                 className="flex items-center text-gray-500 hover:text-gray-700"
                 onClick={() => {
-                  localStorage.removeItem('authToken');
+                  localStorage.removeItem('accessToken');
                   window.location.href = '/login';
                 }}
               >

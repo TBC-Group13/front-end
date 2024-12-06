@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider as JotaiProvider } from 'jotai';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './layout/Header';
 import BottomBar from './layout/BottomBar';
 import Home from './pages/Home';
@@ -37,6 +39,7 @@ const App: React.FC = () => {
         </Routes>
       </main>
       <BottomBar />
+      <ToastContainer />
     </div>
   );
 };

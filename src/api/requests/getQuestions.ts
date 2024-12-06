@@ -23,18 +23,18 @@ const refreshToken = async (): Promise<string | null> => {
     const response = await axios.post(`${baseURL}/token/refresh/`, {
       refresh: localStorage.getItem('refreshToken'),
     });
-    localStorage.setItem('authToken', response.data.access);
+    localStorage.setItem('accessToken', response.data.access);
     return response.data.access;
   } catch (error) {
     console.error('Error refreshing token:', error);
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     return null;
   }
 };
 
 export const fetchQuestions = async () => {
-    let token = localStorage.getItem('authToken');
+    let token = localStorage.getItem('accessToken');
    
     if (!token || isTokenExpired(token)) {
       console.log('Token expired or missing. Refreshing...');
@@ -50,7 +50,6 @@ export const fetchQuestions = async () => {
     try {
       console.log('Sending request to /questions/ endpoint');
       const questionsResponse = await axiosInstance.get('/questions/');
-      console.log('Questions response:', questionsResponse);
    
       return questionsResponse.data;
     } catch (error) {

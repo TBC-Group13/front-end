@@ -8,8 +8,6 @@ import PasswordField from '../../components/Form Components/PasswordField';
 import { validationSchema } from './validation';
 import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../../api/hooks/useLogin';
-import { useAtom } from 'jotai';
-import { errorAtom } from '../../store/store';
 
 export const mobileStylesForForms = `border-white sm:border-neutral-200 shadow-none sm:shadow-lg`;
 
@@ -22,7 +20,6 @@ const Login: React.FC = () => {
 
   const { loginUser, isLoading } = useLogin();
   const navigate = useNavigate();
-  const [error] = useAtom(errorAtom);
 
   interface FormData {
     identifier: string;
@@ -58,12 +55,6 @@ const Login: React.FC = () => {
               showSignUpLink={true}
             />
           </CardContent>
-
-          {error && (
-            <div className="flex items-center justify-center">
-              <p className="text-red-500">{error}</p>
-            </div>
-          )}
 
           <Button
             className="w-[87%] self-center py-6 sm:py-3"
