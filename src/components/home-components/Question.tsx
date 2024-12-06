@@ -12,8 +12,6 @@ interface QuestionProps {
 }
 
 const Question: FC<QuestionProps> = ({data, index}) => {
-  
-  console.log(data[index])
 
   return (
     <div className="rounded-xl bg-white p-4 cursor-pointer">

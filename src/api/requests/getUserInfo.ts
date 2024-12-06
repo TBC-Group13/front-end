@@ -18,7 +18,7 @@ const refreshTokenAndUpdate = async (): Promise<string | null> => {
 
   try {
     const { access } = await fetchNewToken(refresh);
-    localStorage.setItem('accesToken', access);
+    localStorage.setItem('authToken', access);
     return access;
   } catch (error) {
     console.error('Error refreshing token:', error);
