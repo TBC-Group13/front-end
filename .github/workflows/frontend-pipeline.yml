@@ -47,6 +47,7 @@ jobs:
         # Add 'cd' step to navigate to frontend directory
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
           cd /home/ubuntu/front-end && \
+          sudo echo $PATH
           git stash || echo "No local changes to stash"
           git pull origin main && \
           sudo npm install && \
