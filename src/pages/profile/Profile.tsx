@@ -1,4 +1,4 @@
-import { fetchUser } from '@/api/hooks/getUserInfo';
+import { fetchUser } from '@/api/requests/getUserInfo';
 import { useEffect, useState } from 'react';
 
 export default function Profile() {
@@ -18,7 +18,7 @@ export default function Profile() {
     const getUserData = async () => {
       try {
         const userData = await fetchUser();
-        console.log('Fetched user data:', userData);
+
         setUsername(userData.username);
         setEmail(userData.email);
         setReputation(userData.reputation);

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { refreshToken as fetchNewToken } from '../requests/refreshToken';
+import { refreshToken as fetchNewToken } from './refreshToken';
+import ExpiredToken from '../hooks/useIExpiredToken';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -7,17 +8,6 @@ const axiosInstance = axios.create({
   baseURL,
   headers: {},
 });
-
-const isTokenExpired = (token: string): boolean => {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const currentTime = Math.floor(Date.now() / 1000);
-    return payload.exp < currentTime;
-  } catch (error) {
-    console.error('Invalid token:', error);
-    return true;
-  }
-};
 
 const refreshTokenAndUpdate = async (): Promise<string | null> => {
   const refresh = localStorage.getItem('refreshToken');
@@ -27,8 +17,8 @@ const refreshTokenAndUpdate = async (): Promise<string | null> => {
   }
 
   try {
-    const { access } = await fetchNewToken(refresh); // არსებული `refreshToken` გამოყენება
-    localStorage.setItem('authToken', access);
+    const { access } = await fetchNewToken(refresh);
+    localStorage.setItem('accesToken', access);
     return access;
   } catch (error) {
     console.error('Error refreshing token:', error);
@@ -37,7 +27,8 @@ const refreshTokenAndUpdate = async (): Promise<string | null> => {
 };
 
 export const fetchUser = async () => {
-  let token = localStorage.getItem('authToken');
+  const isTokenExpired = ExpiredToken();
+  let token = localStorage.getItem('accesToken');
 
   if (!token || isTokenExpired(token)) {
     console.log('Token expired or missing. Refreshing...');
@@ -48,8 +39,7 @@ export const fetchUser = async () => {
     throw new Error('No valid token available. Please log in again.');
   }
 
-  // Update headers with the new token
-  axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
+  axiosInstance.defaults.headers['fetching'] = `Bearer ${token}`;
 
   try {
     console.log('Fetching user profile...');
