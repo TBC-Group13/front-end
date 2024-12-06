@@ -24,14 +24,17 @@ export const useRegister = () => {
   });
 
   const registerUser = async (data: FormData, onSuccess: () => void) => {
-    mutation.mutate({
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      repeat_password: data.repeatPassword,
-    }, {
-      onSuccess,
-    });
+    mutation.mutate(
+      {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        repeat_password: data.repeatPassword,
+      },
+      {
+        onSuccess,
+      }
+    );
   };
 
   return { registerUser, isLoading: mutation.isLoading };
