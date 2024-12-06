@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { refreshToken as fetchNewToken } from '../requests/refreshToken';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -18,13 +19,17 @@ const isTokenExpired = (token: string): boolean => {
   }
 };
 
-const refreshToken = async (): Promise<string | null> => {
+const refreshTokenAndUpdate = async (): Promise<string | null> => {
+  const refresh = localStorage.getItem('refreshToken');
+  if (!refresh) {
+    console.error('No refresh token available.');
+    return null;
+  }
+
   try {
-    const response = await axios.post(`${baseURL}/token/refresh/`, {
-      refresh: localStorage.getItem('refreshToken'),
-    });
-    localStorage.setItem('authToken', response.data.access);
-    return response.data.access;
+    const { access } = await fetchNewToken(refresh); // არსებული `refreshToken` გამოყენება
+    localStorage.setItem('authToken', access);
+    return access;
   } catch (error) {
     console.error('Error refreshing token:', error);
     return null;
@@ -36,7 +41,7 @@ export const fetchUser = async () => {
 
   if (!token || isTokenExpired(token)) {
     console.log('Token expired or missing. Refreshing...');
-    token = await refreshToken();
+    token = await refreshTokenAndUpdate();
   }
 
   if (!token) {
@@ -47,20 +52,14 @@ export const fetchUser = async () => {
   axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
 
   try {
-    console.log('Sending request to /profile/ endpoint');
+    console.log('Fetching user profile...');
     const userResponse = await axiosInstance.get('/profile/');
-    console.log('User response:', userResponse);
-
     const userId = userResponse.data.id;
 
-    console.log('Sending request to reputation endpoint');
-    const reputationResponse = await axios.get(
-      `${baseURL}/users/${userId}/reputation/`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+    console.log('Fetching user reputation...');
+    const reputationResponse = await axiosInstance.get(
+      `/users/${userId}/reputation/`
     );
-    console.log('Reputation response:', reputationResponse);
 
     const profilePhoto =
       reputationResponse.data.profile_photo || '/icons/profilePhoto.svg';

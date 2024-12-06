@@ -1,4 +1,4 @@
-import { fetchUser } from '@/api/requests/getUserInfo';
+import { fetchUser } from '@/api/hooks/getUserInfo';
 import { useEffect, useState } from 'react';
 
 export default function Profile() {
