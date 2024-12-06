@@ -48,8 +48,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
           source ~/.nvm/nvm.sh
           cd /home/ubuntu/front-end && \
-          git stash || echo "No local changes to stash"
           git pull origin main && \
+          git reset --hard ** \
           npm install && \
           npm install axios && \
           yarn add react-query && \
