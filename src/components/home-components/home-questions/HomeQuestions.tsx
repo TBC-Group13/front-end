@@ -10,9 +10,10 @@ const HomeQuestions: FC<{ isButtonActive: boolean }> = ({ isButtonActive }) => {
     queryFn: fetchQuestions,
     select: (data) => (data ? [...data].reverse() : []),
   });
+
   return (
     <div>
-      {data?.length !== 0 ? (
+      {data?.length !== undefined && 0 ? (
         <div className="flex flex-col gap-y-5 rounded-xl bg-gray-100 p-5">
           {data?.map((_, index) => (
             <Question data={data} index={index} key={index} />
