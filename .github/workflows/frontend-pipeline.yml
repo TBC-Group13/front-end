@@ -49,8 +49,7 @@ jobs:
           cd /home/ubuntu/front-end && \
           git stash || echo "No local changes to stash"
           git pull origin main && \
-          sudo npm install -g yarn && \
-          sudo npm install -g n && \
+          sudo npm install && \
           sudo npm install axios && \
           sudo yarn add react-query && \
           sudo yarn add @types/react-qu && \
