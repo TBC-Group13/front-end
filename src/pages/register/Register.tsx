@@ -33,7 +33,7 @@ const Register: React.FC = () => {
     username: string;
     email: string;
     password: string;
-    repeatPassword: string;
+    repeat_password: string;
   }
 
   const onSubmit = async (data: FormData) => {
@@ -72,8 +72,8 @@ const Register: React.FC = () => {
             />
             <PasswordField
               label="Repeat Password"
-              register={register('repeatPassword')}
-              error={errors.repeatPassword?.message}
+              register={register('repeat_password')}
+              error={errors.repeat_password?.message}
             />
             <div className="mt-4 flex items-baseline justify-between">
               <Label className="text-[14px] text-[gray]">

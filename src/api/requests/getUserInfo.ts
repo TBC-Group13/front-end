@@ -18,7 +18,7 @@ const refreshTokenAndUpdate = async (): Promise<string | null> => {
 
   try {
     const { access } = await fetchNewToken(refresh);
-    localStorage.setItem('authToken', access);
+    localStorage.setItem('accessToken', access);
     return access;
   } catch (error) {
     console.error('Error refreshing token:', error);
@@ -28,7 +28,7 @@ const refreshTokenAndUpdate = async (): Promise<string | null> => {
 
 export const fetchUser = async () => {
   const isTokenExpired = ExpiredToken();
-  let token = localStorage.getItem('accesToken');
+  let token = localStorage.getItem('accessToken');
 
   if (!token || isTokenExpired(token)) {
     console.log('Token expired or missing. Refreshing...');
@@ -39,7 +39,7 @@ export const fetchUser = async () => {
     throw new Error('No valid token available. Please log in again.');
   }
 
-  axiosInstance.defaults.headers['fetching'] = `Bearer ${token}`;
+  axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
 
   try {
     console.log('Fetching user profile...');

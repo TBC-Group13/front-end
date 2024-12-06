@@ -13,7 +13,7 @@ const HomeQuestions: FC<{ isButtonActive: boolean }> = ({ isButtonActive }) => {
 
   return (
     <div>
-      {data?.length !== undefined && 0 ? (
+      {data?.length !== undefined && data.length > 0 ? (
         <div className="flex flex-col gap-y-5 rounded-xl bg-gray-100 p-5">
           {data?.map((_, index) => (
             <Question data={data} index={index} key={index} />
