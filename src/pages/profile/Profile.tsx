@@ -44,8 +44,8 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-screen-xl rounded-lg bg-white p-4 shadow-lg md:p-5 lg:p-6 xl:p-7 2xl:p-8">
+    <div className="mt-40 flex items-center justify-center">
+      <div className="w-full max-w-screen-xl rounded-lg bg-white p-4 shadow-lg md:p-5 lg:w-2/3 lg:p-6 xl:p-7 2xl:p-8">
         <h1 className="self-start text-sm font-bold md:text-base lg:text-lg xl:text-xl 2xl:text-xl">
           Profile
         </h1>

@@ -23,7 +23,7 @@ export interface UsersResponse {
 
 export const fetchUsers = async (): Promise<UsersResponse> => {
   try {
-    const response = await axios.get(`${baseURL}/users/`);
+    const response = await axios.get(`${baseURL}/users/reputation/`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
