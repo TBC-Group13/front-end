@@ -1,8 +1,9 @@
 import listEmpty from '@/assets/list-empty.png';
 import Question from '../Question';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useGeneralQuestions } from '@/api/hooks/useGeneralQuestions';
 import { usePersonalQuestions } from '@/api/hooks/usePersonalQuestions';
+import { fetchFilteredQuestionsWithTags } from '@/api/requests/fetchFilteredQuestionsWithTags';
 
 interface QuestionData {
   id: number;
@@ -12,18 +13,43 @@ interface QuestionData {
   answers: { id: number; content: string; author: string }[];
 }
 
-const HomeQuestions: FC<{ activeTab: 'personal' | 'general' }> = ({
-  activeTab,
-}) => {
-  const { data: generalQuestions } = useGeneralQuestions(
-    activeTab === 'general'
-  );
-  const { data: personalQuestions } = usePersonalQuestions(
-    activeTab === 'personal'
-  );
+const HomeQuestions: FC<{
+  activeTab: 'personal' | 'general';
+  selectedTags: string[];
+}> = ({ activeTab, selectedTags }) => {
+  const { data: generalQuestions, isLoading: isLoadingGeneral } =
+    useGeneralQuestions(activeTab === 'general');
+  const { data: personalQuestions, isLoading: isLoadingPersonal } =
+    usePersonalQuestions(activeTab === 'personal');
+  const [filteredQuestions, setFilteredQuestions] = useState<
+    QuestionData[] | undefined
+  >(undefined);
+  const [loading, setLoading] = useState(true);
 
-  const questions: QuestionData[] | undefined =
-    activeTab === 'general' ? generalQuestions : personalQuestions?.results;
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      setLoading(true);
+      if (selectedTags.length > 0) {
+        const questions = await fetchFilteredQuestionsWithTags(selectedTags);
+        setFilteredQuestions(questions);
+      } else {
+        setFilteredQuestions(
+          activeTab === 'general'
+            ? generalQuestions
+            : personalQuestions?.results
+        );
+      }
+      setLoading(false);
+    };
+
+    fetchQuestions();
+  }, [activeTab, selectedTags, generalQuestions, personalQuestions]);
+
+  const questions = filteredQuestions;
+
+  if (loading || isLoadingGeneral || isLoadingPersonal) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
