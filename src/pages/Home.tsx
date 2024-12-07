@@ -6,17 +6,17 @@ import HomeTags from '@/components/home-components/home-tags/HomeTags';
 import HomeQuestions from '@/components/home-components/home-questions/HomeQuestions';
 
 const Home: React.FC = () => {
-  const [isButtonActive, setIsButtonActive] = useState(true);
+  const [activeTab, setActiveTab] = useState<'personal' | 'general'>('general');
 
   return (
     <section className="2xl:px-20">
       <div>
         <HomeTitle />
-        <HomeButtons setIsButtonActive={setIsButtonActive} isButtonActive={isButtonActive}/>
+        <HomeButtons setActiveTab={setActiveTab} activeTab={activeTab} />
         <HomeSearch />
-        <HomeTags/>
+        <HomeTags />
       </div>
-      <HomeQuestions isButtonActive={isButtonActive}/>
+      <HomeQuestions activeTab={activeTab} />
     </section>
   );
 };

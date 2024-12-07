@@ -2,30 +2,30 @@ import { Button } from '@/components/ui/button';
 import { FC } from 'react';
 
 interface HomeButtonsProps {
-    setIsButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
-    isButtonActive: boolean;
-  }
+  setActiveTab: React.Dispatch<React.SetStateAction<'personal' | 'general'>>;
+  activeTab: 'personal' | 'general';
+}
 
-const HomeButtons: FC<HomeButtonsProps> = ({ setIsButtonActive, isButtonActive }) => {
-
-  function activeGeneral() {
-    setIsButtonActive(true);
+const HomeButtons: FC<HomeButtonsProps> = ({ setActiveTab, activeTab }) => {
+  function activeGlobal() {
+    setActiveTab('general');
   }
 
   function activePersonal() {
-    setIsButtonActive(false);
+    setActiveTab('personal');
   }
+
   return (
     <div className="mb-5 grid grid-cols-2 gap-3 2xl:mx-auto 2xl:w-2/4">
       <Button
-        onClick={activeGeneral}
-        variant={isButtonActive ? 'default' : 'secondary'}
+        onClick={activeGlobal}
+        variant={activeTab === 'general' ? 'default' : 'secondary'}
       >
         General
       </Button>
       <Button
         onClick={activePersonal}
-        variant={isButtonActive ? 'secondary' : 'default'}
+        variant={activeTab === 'personal' ? 'default' : 'secondary'}
       >
         Personal
       </Button>

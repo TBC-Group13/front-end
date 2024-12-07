@@ -1,31 +1,46 @@
 import listEmpty from '@/assets/list-empty.png';
 import Question from '../Question';
 import { FC } from 'react';
-import { useQuery } from 'react-query';
-import { fetchQuestions } from '@/api/requests/getQuestions';
+import { useGeneralQuestions } from '@/api/hooks/useGeneralQuestions';
+import { usePersonalQuestions } from '@/api/hooks/usePersonalQuestions';
 
-const HomeQuestions: FC<{ isButtonActive: boolean }> = ({ isButtonActive }) => {
-  const { data } = useQuery({
-    queryKey: ['questions'],
-    queryFn: fetchQuestions,
-    select: (data) => (data ? [...data].reverse() : []),
-  });
+interface QuestionData {
+  id: number;
+  title: string;
+  description: string;
+  tags: { id: number; name: string }[];
+  answers: { id: number; content: string; author: string }[];
+}
+
+const HomeQuestions: FC<{ activeTab: 'personal' | 'general' }> = ({
+  activeTab,
+}) => {
+  const { data: generalQuestions } = useGeneralQuestions(
+    activeTab === 'general'
+  );
+  const { data: personalQuestions } = usePersonalQuestions(
+    activeTab === 'personal'
+  );
+
+  const questions: QuestionData[] | undefined =
+    activeTab === 'general' ? generalQuestions : personalQuestions?.results;
 
   return (
     <div>
-      {data?.length !== undefined && data.length > 0 ? (
+      {questions?.length !== undefined && questions.length > 0 ? (
         <div className="flex flex-col gap-y-5 rounded-xl bg-gray-100 p-5">
-          {data?.map((question) => (
-            <Question key={question.id} data={question} />
+          {questions?.map((question: QuestionData) => (
+            <Question
+              key={question.id}
+              data={{
+                id: question.id,
+                title: question.title || '',
+                description: question.description || '',
+                tags: question.tags || [],
+                answers: question.answers || [],
+              }}
+            />
           ))}
-        </div>
-      ) : isButtonActive ? (
-        <div className="mt-20 flex flex-col items-center">
-          <div className="flex flex-col items-center">
-            <span className="text-gray-400">No question yet</span>
-            <span className="font-semibold">Be the first to ask one</span>
-          </div>
-          <img className="w-80" src={listEmpty} alt="" />
         </div>
       ) : (
         <div className="mt-20 flex flex-col items-center">

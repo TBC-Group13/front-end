@@ -7,7 +7,7 @@ interface QuestionProps {
     id: number;
     title: string;
     description: string;
-    tags: { name: string }[];
+    tags: { id: number; name: string }[];
     answers: { id: number; content: string; author: string }[];
   };
 }
@@ -26,8 +26,8 @@ const Question: FC<QuestionProps> = ({ data }) => {
         </span>
       </div>
       <div className="flex gap-3">
-        {data.tags.map((tag, index) => (
-          <StaticTag key={index}>{tag.name}</StaticTag>
+        {data.tags.map((tag) => (
+          <StaticTag key={tag.id}>{tag.name}</StaticTag>
         ))}
       </div>
     </div>
