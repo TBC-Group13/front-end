@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
+import { fetchTags } from '@/api/requests/getTags';
+import { createTag } from '@/api/requests/createTag';
 
 export interface Tag {
   id: number;
@@ -11,33 +13,38 @@ interface AddTabProps {
   setTags: React.Dispatch<React.SetStateAction<Tag[]>>;
 }
 
-export const AddTab: React.FC<AddTabProps> = ({ tags, setTags }) => {
-  const [availableTabs, setAvailableTabs] = useState<Tag[]>([]);
+export const AddTag: React.FC<AddTabProps> = ({ tags, setTags }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
 
-  const accessToken = localStorage.getItem('accessToken');
-  const baseURL = import.meta.env.VITE_BASE_URL;
+  const { data: availableTabs = [], isLoading } = useQuery(
+    ['tags'],
+    () =>
+      fetchTags(
+        import.meta.env.VITE_BASE_URL,
+        localStorage.getItem('accessToken') || ''
+      ),
+    {
+      onSuccess: (tagsData) => {
+        console.log('Fetched tags:', tagsData);
+      },
+    }
+  );
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get(`${baseURL}/tags/`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const tagsData: Tag[] = response.data;
-        setAvailableTabs(tagsData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching tags:', error);
-        setLoading(false);
-      }
-    };
+  const handleTabClick = (tag: Tag) => {
+    if (!tags.some((selectedTab) => selectedTab.id === tag.id)) {
+      setTags([...tags, tag]);
+    }
+    setSearchQuery('');
+  };
 
-    fetchTags();
-  }, [accessToken, baseURL]);
+  const mutation = useMutation(createTag, {
+    onSuccess: (newTag) => {
+      setTags((prevTags) => [...prevTags, newTag]);
+    },
+    onError: (error) => {
+      console.error('Error creating tag:', error);
+    },
+  });
 
   const handleAddNewTag = async () => {
     const trimmedQuery = searchQuery.trim();
@@ -45,31 +52,8 @@ export const AddTab: React.FC<AddTabProps> = ({ tags, setTags }) => {
       trimmedQuery &&
       !availableTabs.some((tab) => tab.name === trimmedQuery)
     ) {
-      try {
-        const response = await axios.post(
-          `${baseURL}/tags/`,
-          { name: trimmedQuery },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const newTag: Tag = response.data;
-        setAvailableTabs([...availableTabs, newTag]);
-        setTags([...tags, newTag]);
-        setSearchQuery('');
-      } catch (error) {
-        console.error('Error creating new tag:', error);
-      }
+      mutation.mutate(trimmedQuery);
     }
-  };
-
-  const handleTabClick = (tab: Tag) => {
-    if (!tags.some((selectedTab) => selectedTab.id === tab.id)) {
-      setTags([...tags, tab]);
-    }
-    setSearchQuery('');
   };
 
   const handleRemoveTag = (tagId: number) => {
@@ -112,13 +96,9 @@ export const AddTab: React.FC<AddTabProps> = ({ tags, setTags }) => {
         />
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <span>Loading tags...</span>
-      ) : searchQuery.trim() === '' ? (
-        <span></span>
-      ) : filteredTabs.length === 0 ? (
-        <span>No matching tags</span>
-      ) : (
+      ) : searchQuery.trim() !== '' && filteredTabs.length > 0 ? (
         <div>
           {filteredTabs.map((tab) => (
             <button
@@ -130,7 +110,9 @@ export const AddTab: React.FC<AddTabProps> = ({ tags, setTags }) => {
             </button>
           ))}
         </div>
-      )}
+      ) : searchQuery.trim() !== '' && filteredTabs.length === 0 ? (
+        <span>No matching tags</span>
+      ) : null}
     </div>
   );
 };

@@ -5,6 +5,9 @@ export const validationSchema = Yup.object({
     .required('Title is required')
     .max(255, 'Title must be at most 255 characters'),
   description: Yup.string().required('Description is required'),
-  tags: Yup.array().min(1, 'At least one tag is required'),
+  tags: Yup.array()
+    .min(1, 'At least one tag is required')
+    .required('Tags are required'),
+
   authentication: Yup.string().required('Authentication is required'),
 });
