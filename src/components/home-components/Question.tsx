@@ -8,6 +8,7 @@ interface QuestionProps {
     title: string;
     description: string;
     tags: { name: string }[];
+    answers: { id: number; content: string; author: string }[];
   };
 }
 
@@ -16,7 +17,7 @@ const Question: FC<QuestionProps> = ({ data }) => {
     <div className="cursor-pointer rounded-xl bg-white p-4">
       <div className="mb-1 flex items-center justify-between text-gray-500">
         <span className="text-sm">{data.title}</span>
-        <span className="text-xs">Replies: 5</span>
+        <span className="text-xs">Replies: {data.answers.length}</span>
       </div>
       <div className="mb-2 flex justify-between">
         <span className="font-semibold">{data.description}</span>
