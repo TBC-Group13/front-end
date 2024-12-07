@@ -4,29 +4,29 @@ import { FC } from 'react';
 
 interface QuestionProps {
   data: {
+    id: number;
     title: string;
     description: string;
     tags: { name: string }[];
-  }[];
-  index: number;
+  };
 }
 
-const Question: FC<QuestionProps> = ({ data, index }) => {
+const Question: FC<QuestionProps> = ({ data }) => {
   return (
     <div className="cursor-pointer rounded-xl bg-white p-4">
       <div className="mb-1 flex items-center justify-between text-gray-500">
-        <span className="text-sm">{data[index].title}</span>
-        <span className="text- text-xs">Replies: 5</span>
+        <span className="text-sm">{data.title}</span>
+        <span className="text-xs">Replies: 5</span>
       </div>
       <div className="mb-2 flex justify-between">
-        <span className="font-semibold">{data[index].description}</span>
+        <span className="font-semibold">{data.description}</span>
         <span className="text-3xl text-green-500">
           <IoIosCheckmark />
         </span>
       </div>
       <div className="flex gap-3">
-        {data[index].tags.map((items: { name: string }) => (
-          <StaticTag key={index}>{items.name}</StaticTag>
+        {data.tags.map((tag, index) => (
+          <StaticTag key={index}>{tag.name}</StaticTag>
         ))}
       </div>
     </div>
