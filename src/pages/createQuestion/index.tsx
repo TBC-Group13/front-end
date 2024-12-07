@@ -18,8 +18,7 @@ export const CreateQuestion = () => {
 
   const mutation = useMutation({
     mutationFn: () => createQuestion(title, description, tags, accessToken),
-    onSuccess: (data) => {
-      console.log('Question created:', data);
+    onSuccess: () => {
       setTitle('');
       setDescription('');
       setTags([]);

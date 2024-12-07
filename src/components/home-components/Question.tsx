@@ -7,7 +7,7 @@ interface QuestionProps {
     id: number;
     title: string;
     description: string;
-    tags: { id: number; name: string }[];
+    tags?: { id: number; name: string }[] | string[];
     answers: { id: number; content: string; author: string }[];
   };
 }
@@ -25,11 +25,17 @@ const Question: FC<QuestionProps> = ({ data }) => {
           <IoIosCheckmark />
         </span>
       </div>
-      <div className="flex gap-3">
-        {data.tags.map((tag) => (
-          <StaticTag key={tag.id}>{tag.name}</StaticTag>
-        ))}
-      </div>
+      {data.tags && data.tags.length > 0 && (
+        <div className="flex gap-3">
+          {data.tags.map((tag, index) =>
+            typeof tag === 'string' ? (
+              <StaticTag key={index}>{tag}</StaticTag>
+            ) : (
+              <StaticTag key={tag.id}>{tag.name}</StaticTag>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 };

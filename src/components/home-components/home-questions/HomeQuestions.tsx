@@ -3,7 +3,8 @@ import Question from '../Question';
 import { FC, useEffect, useState } from 'react';
 import { useGeneralQuestions } from '@/api/hooks/useGeneralQuestions';
 import { usePersonalQuestions } from '@/api/hooks/usePersonalQuestions';
-import { fetchFilteredQuestionsWithTags } from '@/api/requests/fetchFilteredQuestionsWithTags';
+import { fetchQuestionsWithTags } from '@/api/requests/fetchQuestionsWithTags';
+import { fetchQuestionsWithSearch } from '@/api/requests/fetchQuestionsWithSearch';
 
 interface QuestionData {
   id: number;
@@ -16,7 +17,8 @@ interface QuestionData {
 const HomeQuestions: FC<{
   activeTab: 'personal' | 'general';
   selectedTags: string[];
-}> = ({ activeTab, selectedTags }) => {
+  searchQuery: string;
+}> = ({ activeTab, selectedTags, searchQuery }) => {
   const { data: generalQuestions, isLoading: isLoadingGeneral } =
     useGeneralQuestions(activeTab === 'general');
   const { data: personalQuestions, isLoading: isLoadingPersonal } =
@@ -29,21 +31,52 @@ const HomeQuestions: FC<{
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoading(true);
-      if (selectedTags.length > 0) {
-        const questions = await fetchFilteredQuestionsWithTags(selectedTags);
-        setFilteredQuestions(questions);
+      let questions: QuestionData[] | undefined = [];
+
+      if (activeTab === 'general') {
+        if (searchQuery) {
+          questions = await fetchQuestionsWithSearch(searchQuery);
+        } else if (selectedTags.length > 0) {
+          questions = await fetchQuestionsWithTags(selectedTags);
+        } else {
+          questions = generalQuestions;
+        }
       } else {
-        setFilteredQuestions(
-          activeTab === 'general'
-            ? generalQuestions
-            : personalQuestions?.results
-        );
+        questions = personalQuestions?.results;
+
+        if (searchQuery) {
+          questions = questions?.filter(
+            (question) =>
+              question.title
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()) ||
+              question.description
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())
+          );
+        }
+
+        if (selectedTags.length > 0) {
+          questions = questions?.filter((question) =>
+            question.tags.some((tag) =>
+              selectedTags.includes(typeof tag === 'string' ? tag : tag.name)
+            )
+          );
+        }
       }
+
+      setFilteredQuestions(questions);
       setLoading(false);
     };
 
     fetchQuestions();
-  }, [activeTab, selectedTags, generalQuestions, personalQuestions]);
+  }, [
+    activeTab,
+    selectedTags,
+    searchQuery,
+    generalQuestions,
+    personalQuestions,
+  ]);
 
   const questions = filteredQuestions;
 

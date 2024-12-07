@@ -16,18 +16,11 @@ interface AddTabProps {
 export const AddTag: React.FC<AddTabProps> = ({ tags, setTags }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const { data: availableTabs = [], isLoading } = useQuery(
-    ['tags'],
-    () =>
-      fetchTags(
-        import.meta.env.VITE_BASE_URL,
-        localStorage.getItem('accessToken') || ''
-      ),
-    {
-      onSuccess: (tagsData) => {
-        console.log('Fetched tags:', tagsData);
-      },
-    }
+  const { data: availableTabs = [], isLoading } = useQuery(['tags'], () =>
+    fetchTags(
+      import.meta.env.VITE_BASE_URL,
+      localStorage.getItem('accessToken') || ''
+    )
   );
 
   const handleTabClick = (tag: Tag) => {

@@ -8,16 +8,21 @@ import HomeQuestions from '@/components/home-components/home-questions/HomeQuest
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'personal' | 'general'>('general');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   return (
     <section className="2xl:px-20">
       <div>
         <HomeTitle />
         <HomeButtons setActiveTab={setActiveTab} activeTab={activeTab} />
-        <HomeSearch />
+        <HomeSearch setSearchQuery={setSearchQuery} />
         <HomeTags setSelectedTags={setSelectedTags} />
       </div>
-      <HomeQuestions activeTab={activeTab} selectedTags={selectedTags} />
+      <HomeQuestions
+        activeTab={activeTab}
+        selectedTags={selectedTags}
+        searchQuery={searchQuery}
+      />
     </section>
   );
 };
