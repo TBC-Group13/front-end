@@ -5,6 +5,7 @@ import { useGeneralQuestions } from '@/api/hooks/useGeneralQuestions';
 import { usePersonalQuestions } from '@/api/hooks/usePersonalQuestions';
 import { fetchQuestionsWithTags } from '@/api/requests/fetchQuestionsWithTags';
 import { fetchQuestionsWithSearch } from '@/api/requests/fetchQuestionsWithSearch';
+import { useNavigate } from 'react-router-dom';
 
 interface QuestionData {
   id: number;
@@ -79,26 +80,32 @@ const HomeQuestions: FC<{
   ]);
 
   const questions = filteredQuestions;
-
+  const navigate = useNavigate();
   if (loading || isLoadingGeneral || isLoadingPersonal) {
     return <div>Loading...</div>;
   }
+
+  const handleGoNextPage = (id: number) => {
+    navigate(`/singleQuestion/${id}`);
+  };
 
   return (
     <div>
       {questions?.length !== undefined && questions.length > 0 ? (
         <div className="flex flex-col gap-y-5 rounded-xl bg-gray-100 p-5">
           {questions?.map((question: QuestionData) => (
-            <Question
-              key={question.id}
-              data={{
-                id: question.id,
-                title: question.title || '',
-                description: question.description || '',
-                tags: question.tags || [],
-                answers: question.answers || [],
-              }}
-            />
+            <div onClick={() => handleGoNextPage(question.id)}>
+              <Question
+                key={question.id}
+                data={{
+                  id: question.id,
+                  title: question.title || '',
+                  description: question.description || '',
+                  tags: question.tags || [],
+                  answers: question.answers || [],
+                }}
+              />
+            </div>
           ))}
         </div>
       ) : (
