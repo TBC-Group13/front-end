@@ -8,6 +8,7 @@ import { validationSchema } from './validation';
 import { AddTag } from './AddTag';
 import { createQuestion } from '@/api/requests/createQuestions';
 import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
 
 export const CreateQuestion = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -23,6 +24,7 @@ export const CreateQuestion = () => {
       setDescription('');
       setTags([]);
       setErrors({});
+      toast.success('Create Question successfully');
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {
