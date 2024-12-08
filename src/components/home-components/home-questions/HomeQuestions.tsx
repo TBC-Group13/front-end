@@ -13,6 +13,7 @@ interface QuestionData {
   description: string;
   tags: { id: number; name: string }[];
   answers: { id: number; content: string; author: string }[];
+  completed: boolean;
 }
 
 const HomeQuestions: FC<{
@@ -103,6 +104,7 @@ const HomeQuestions: FC<{
                   description: question.description || '',
                   tags: question.tags || [],
                   answers: question.answers || [],
+                  completed: question.completed,
                 }}
               />
             </div>

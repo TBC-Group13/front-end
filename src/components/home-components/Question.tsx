@@ -9,6 +9,7 @@ interface QuestionProps {
     description: string;
     tags?: { id: number; name: string }[] | string[];
     answers: { id: number; content: string; author: string }[];
+    completed: boolean;
   };
 }
 
@@ -21,9 +22,11 @@ const Question: FC<QuestionProps> = ({ data }) => {
       </div>
       <div className="mb-2 flex justify-between">
         <span className="font-semibold">{data.description}</span>
-        <span className="text-3xl text-green-500">
-          <IoIosCheckmark />
-        </span>
+        {data.completed && (
+          <span className="text-3xl text-green-500">
+            <IoIosCheckmark />
+          </span>
+        )}
       </div>
       {data.tags && data.tags.length > 0 && (
         <div className="flex gap-3">
