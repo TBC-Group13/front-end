@@ -9,6 +9,7 @@ import { AddTag } from './AddTag';
 import { createQuestion } from '@/api/requests/createQuestions';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export const CreateQuestion = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -16,7 +17,7 @@ export const CreateQuestion = () => {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState<{ id: number; name: string }[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+  const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: () => createQuestion(title, description, tags, accessToken),
     onSuccess: () => {
@@ -34,6 +35,10 @@ export const CreateQuestion = () => {
       }
     },
   });
+
+  const handleGoHomePage = () => {
+    navigate('/');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,7 +131,7 @@ export const CreateQuestion = () => {
           {errors.tags && <div className="text-red-500">{errors.tags}</div>}
         </div>
 
-        <Button type="submit" className="w-[100%]">
+        <Button onClick={handleGoHomePage} type="submit" className="w-[100%]">
           Create
         </Button>
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { fetchTags } from '@/api/requests/getTags';
 import { createTag } from '@/api/requests/createTag';
+import { Button } from '@/components/ui/button';
 
 export interface Tag {
   id: number;
@@ -82,12 +83,8 @@ export const AddTag: React.FC<AddTabProps> = ({ tags, setTags }) => {
           placeholder="Add or search tags..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && searchQuery.trim() !== '') {
-              handleAddNewTag();
-            }
-          }}
         />
+        <Button onClick={() => handleAddNewTag()}>create new tag</Button>
       </div>
 
       {isLoading ? (
