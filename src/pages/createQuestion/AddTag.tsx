@@ -40,14 +40,28 @@ export const AddTag: React.FC<AddTabProps> = ({ tags, setTags }) => {
     },
   });
 
+  // const handleAddNewTag = async () => {
+  //   const trimmedQuery = searchQuery.trim();
+  //   if (
+  //     trimmedQuery &&
+  //     !availableTabs.some((tab) => tab.name === trimmedQuery)
+  //   ) {
+  //     mutation.mutate(trimmedQuery);
+  //     setSearchQuery('');
+  //   }
+  // };
+
   const handleAddNewTag = async () => {
     const trimmedQuery = searchQuery.trim();
+
     if (
-      trimmedQuery &&
+      trimmedQuery.length > 0 &&
       !availableTabs.some((tab) => tab.name === trimmedQuery)
     ) {
       mutation.mutate(trimmedQuery);
       setSearchQuery('');
+    } else if (trimmedQuery.length === 0) {
+      console.error('Tag cannot be empty or just spaces');
     }
   };
 
