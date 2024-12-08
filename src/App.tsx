@@ -15,6 +15,7 @@ import { CreateQuestion } from './pages/createQuestion';
 import { useAuth } from './api/hooks/useAuth';
 import ProtectedRoute from './guard/ProtectedRoute';
 import PublicRoute from './guard/PublicRoute';
+import { SingleQuestion } from './pages/singleQuestion';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/liderboard" element={<Liderboard />} />
             <Route path="/createQuestion" element={<CreateQuestion />} />
+            <Route path="/singleQuestion/:id" element={<SingleQuestion />} />
           </Route>
         </Routes>
       </main>

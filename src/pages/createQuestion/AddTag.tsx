@@ -46,6 +46,7 @@ export const AddTag: React.FC<AddTabProps> = ({ tags, setTags }) => {
       !availableTabs.some((tab) => tab.name === trimmedQuery)
     ) {
       mutation.mutate(trimmedQuery);
+      setSearchQuery('');
     }
   };
 
