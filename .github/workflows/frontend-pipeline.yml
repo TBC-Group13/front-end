@@ -48,7 +48,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
           source ~/.nvm/nvm.sh
           cd /home/ubuntu/front-end && \
-          git reset origin/main ** \
+          git reset --hard && \
           git pull origin main && \
           npm install && \
           npm install axios && \
