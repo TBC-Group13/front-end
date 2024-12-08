@@ -60,10 +60,8 @@ export default function Profile() {
     reader.readAsDataURL(file);
   };
 
-  const token = localStorage.getItem('accessToken') || '';
-
   return (
-    <div className="mt-40 flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div className="w-full max-w-screen-xl rounded-lg bg-white bg-opacity-50 p-4 shadow-none backdrop-blur-md md:p-5 lg:w-2/3 lg:p-6 xl:p-7 2xl:p-8">
         <h1 className="self-start text-lg font-bold md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">
           Profile
@@ -88,7 +86,6 @@ export default function Profile() {
             setNewPassword={setNewPassword}
             confirmDelete={confirmDelete}
             setConfirmDelete={setConfirmDelete}
-            token={token}
             setProfilePhoto={setProfilePhoto}
             setUsername={setUsername}
             setEmail={setEmail}

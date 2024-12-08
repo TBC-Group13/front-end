@@ -13,7 +13,6 @@ interface ProfileEditFormProps {
   confirmDelete: boolean;
   setConfirmDelete: React.Dispatch<React.SetStateAction<boolean>>;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  token: string;
   setProfilePhoto: React.Dispatch<React.SetStateAction<string>>;
   setUsername: React.Dispatch<React.SetStateAction<string | null>>;
   setEmail: React.Dispatch<React.SetStateAction<string | null>>;
@@ -28,7 +27,6 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   confirmDelete,
   setConfirmDelete,
   setEditing,
-  token,
   setProfilePhoto,
   setUsername,
   setEmail,
@@ -56,7 +54,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       }
 
       try {
-        const updatedUserData = await updateUserProfile(token, formData);
+        const updatedUserData = await updateUserProfile(formData);
         setProfilePhoto(
           updatedUserData.profile_photo || '/icons/profilePhoto.svg'
         );
@@ -71,7 +69,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 
   const handleDeleteProfile = async () => {
     try {
-      await deleteUserProfile(token);
+      await deleteUserProfile();
       console.log('Profile deleted successfully');
     } catch (error) {
       console.error('Failed to delete profile:', error);

@@ -2,7 +2,12 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const updateUserProfile = async (token: string, formData: FormData) => {
+export const updateUserProfile = async (formData: FormData) => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    throw new Error('No valid token available. Please log in again.');
+  }
+
   try {
     const response = await axios.patch(`${baseURL}/user/settings/`, formData, {
       headers: {

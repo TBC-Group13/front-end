@@ -2,7 +2,12 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const deleteUserProfile = async (token: string) => {
+export const deleteUserProfile = async () => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) {
+    throw new Error('No valid token available. Please log in again.');
+  }
+
   try {
     const response = await axios.delete(`${baseURL}/user/settings/`, {
       headers: {
