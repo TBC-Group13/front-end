@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="fixed hidden w-full bg-gray-100 p-4 shadow-md lg:block">
+    <header className="fixed z-10 hidden w-full bg-gray-100 p-4 shadow-md lg:block">
       <nav className="mx-20">
         <ul className="flex items-center justify-between">
           <div className="flex items-center space-x-4">

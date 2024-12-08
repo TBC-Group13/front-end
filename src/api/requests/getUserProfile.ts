@@ -52,13 +52,14 @@ export const fetchUser = async () => {
     );
 
     const profilePhoto =
-      reputationResponse.data.profile_photo || '/icons/profilePhoto.svg';
+      userResponse.data.profile_photo || '/icons/profilePhoto.svg';
 
     return {
-      ...userResponse.data,
+      username: userResponse.data.username,
+      email: userResponse.data.email,
+      profilePhoto,
       reputation: reputationResponse.data.reputation,
       answers_count: reputationResponse.data.answers_count,
-      profile_photo: profilePhoto,
     };
   } catch (error) {
     console.error('Error fetching user data:', error);
