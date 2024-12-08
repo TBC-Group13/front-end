@@ -10,7 +10,7 @@ export const DetailList: React.FC = () => {
       {data?.users.map((user) => (
         <Card
           key={user.user_id}
-          className="border-none shadow-none lg:w-[650px] lg:justify-self-center"
+          className="w-11/12 border-none shadow-none lg:justify-self-center"
         >
           <CardContent className="flex items-center justify-between self-center p-4">
             <div className="flex flex-col">

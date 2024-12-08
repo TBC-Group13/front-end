@@ -25,7 +25,7 @@ const App: React.FC = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 p-4">
+      <main className="flex-1 p-4 pb-20 lg:mt-12 lg:pb-0">
         <Routes>
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
