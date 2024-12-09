@@ -9,8 +9,10 @@ export const deleteUserProfile = async () => {
   }
 
   try {
-    const response = await axios.delete(`${baseURL}/user/settings/`, {
+    const response = await axios.delete(`${baseURL}/users/delete/`, {
       headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });

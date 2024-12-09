@@ -27,11 +27,6 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
             alt="Profile"
             className="h-full w-full object-cover"
           />
-          <img
-            className="absolute right-2 top-2 h-6 w-6 cursor-pointer xl:h-8 xl:w-8 2xl:h-10 2xl:w-10"
-            src="/icons/camera.svg"
-            alt="Camera Icon"
-          />
           <input
             id="profilePhotoInput"
             type="file"

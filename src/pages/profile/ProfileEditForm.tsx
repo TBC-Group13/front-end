@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { updateUserProfile } from '@/api/requests/updateUserProfile';
 import { deleteUserProfile } from '@/api/requests/deleteUserProfile';
 import { validationSchema } from './validationSchema';
@@ -31,6 +32,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   setUsername,
   setEmail,
 }) => {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       username: newUsername,
@@ -71,6 +74,11 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
     try {
       await deleteUserProfile();
       console.log('Profile deleted successfully');
+      // Remove tokens from local storage
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      // Navigate to login page
+      navigate('/login');
     } catch (error) {
       console.error('Failed to delete profile:', error);
     }
@@ -83,7 +91,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           className="block text-lg font-medium text-gray-600"
           htmlFor="username"
         >
-          New Username
+          Change Username
         </label>
         <input
           id="username"
@@ -96,10 +104,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             setUsername(e.target.value);
           }}
           onBlur={formik.handleBlur}
-          className="mt-2 block w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+          className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-lg shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         />
         {formik.touched.username && formik.errors.username ? (
-          <div className="text-red-500">{formik.errors.username}</div>
+          <div className="mt-1 text-red-500">{formik.errors.username}</div>
         ) : null}
       </div>
 
@@ -108,7 +116,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           className="block text-lg font-medium text-gray-600"
           htmlFor="email"
         >
-          New Email
+          Change Email
         </label>
         <input
           id="email"
@@ -121,10 +129,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             setEmail(e.target.value);
           }}
           onBlur={formik.handleBlur}
-          className="mt-2 block w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+          className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-lg shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         />
         {formik.touched.email && formik.errors.email ? (
-          <div className="text-red-500">{formik.errors.email}</div>
+          <div className="mt-1 text-red-500">{formik.errors.email}</div>
         ) : null}
       </div>
 
@@ -145,10 +153,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             setNewPassword(e.target.value);
           }}
           onBlur={formik.handleBlur}
-          className="mt-2 block w-full rounded-md border-gray-300 text-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+          className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-lg shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         />
         {formik.touched.password && formik.errors.password ? (
-          <div className="text-red-500">{formik.errors.password}</div>
+          <div className="mt-1 text-red-500">{formik.errors.password}</div>
         ) : null}
       </div>
 
@@ -162,7 +170,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         <button
           type="button"
           className="w-full rounded-md bg-gray-300 px-6 py-3 text-lg text-black shadow-sm hover:bg-gray-400 focus:outline-none"
-          onClick={() => setEditing(false)}
+          onClick={() => {
+            setEditing(false);
+            setConfirmDelete(false);
+          }}
         >
           Cancel
         </button>
@@ -170,8 +181,12 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 
       <div className="mt-8 flex justify-center space-x-4">
         <button
+          type="button"
           className="rounded-md bg-red-500 px-6 py-3 text-lg text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-          onClick={() => setConfirmDelete(!confirmDelete)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setConfirmDelete(!confirmDelete);
+          }}
         >
           Delete Profile
         </button>

@@ -2,6 +2,7 @@ import { fetchUser } from '@/api/requests/getUserProfile';
 import { useEffect, useState, ChangeEvent } from 'react';
 import ProfileDetails from './ProfileDetails';
 import ProfileEditForm from './ProfileEditForm';
+import { updateUserProfile } from '@/api/requests/updateUserProfile';
 
 export default function Profile() {
   const [username, setUsername] = useState<string | null>(null);
@@ -11,7 +12,7 @@ export default function Profile() {
     null
   );
   const [profilePhoto, setProfilePhoto] = useState<string>(
-    '/icons/profilePhoto.svg'
+    'https://github.com/shadcn.png'
   );
   const [, setLoading] = useState<boolean>(true);
   const [, setError] = useState<string | null>(null);
@@ -27,13 +28,13 @@ export default function Profile() {
     const getUserData = async () => {
       try {
         const userData = await fetchUser();
-
-        console.log(userData);
         setUsername(userData.username);
         setEmail(userData.email);
         setReputation(userData.reputation);
         setAnsweredQuestions(userData.answers_count);
-        setProfilePhoto(userData.profilePhoto || '/icons/profilePhoto.svg');
+        setProfilePhoto(
+          userData.profilePhoto || 'https://github.com/shadcn.png'
+        );
         setNewUsername(userData.username);
         setNewEmail(userData.email);
       } catch (error) {
@@ -47,17 +48,24 @@ export default function Profile() {
     getUserData();
   }, []);
 
-  const handleProfilePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePhotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.result) {
-        setProfilePhoto(reader.result.toString());
+    const formData = new FormData();
+    formData.append('profile_photo', file);
+
+    try {
+      await updateUserProfile(formData);
+      const userData = await fetchUser();
+      setProfilePhoto(userData.profilePhoto || '/icons/profilePhoto.svg');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Failed to update profile photo:', error.message);
+      } else {
+        console.error('Failed to update profile photo:', error);
       }
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   return (
