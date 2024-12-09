@@ -5,7 +5,7 @@ export const useGeneralQuestions = (enabled: boolean) => {
   return useQuery({
     queryKey: ['questions'],
     queryFn: fetchQuestions,
-    select: (data) => (data ? [...data].reverse() : []),
+    select: (data) => (data ? [...data] : []),
     enabled,
   });
 };
