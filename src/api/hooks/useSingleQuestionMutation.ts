@@ -7,8 +7,8 @@ export const useSingleQuestionQuery = (id: string | number) => {
     queryKey: ['singleQuestion', id],
     queryFn: () => getSingleQuestion(id),
     enabled: !!id,
-    onSuccess: (data) => {
-      console.log('Fetched question data:', data);
+    onSuccess: () => {
+      console.log('Question fetched successfully');
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {
