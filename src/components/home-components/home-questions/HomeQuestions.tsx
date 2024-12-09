@@ -6,6 +6,7 @@ import { usePersonalQuestions } from '@/api/hooks/usePersonalQuestions';
 import { fetchQuestionsWithTags } from '@/api/requests/fetchQuestionsWithTags';
 import { fetchQuestionsWithSearch } from '@/api/requests/fetchQuestionsWithSearch';
 import { useNavigate } from 'react-router-dom';
+import { useDebounce } from '@/api/hooks/useDebounce';
 
 interface QuestionData {
   id: number;
@@ -30,14 +31,16 @@ const HomeQuestions: FC<{
   >(undefined);
   const [loading, setLoading] = useState(true);
 
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoading(true);
       let questions: QuestionData[] | undefined = [];
 
       if (activeTab === 'general') {
-        if (searchQuery) {
-          questions = await fetchQuestionsWithSearch(searchQuery);
+        if (debouncedSearchQuery) {
+          questions = await fetchQuestionsWithSearch(debouncedSearchQuery);
         } else if (selectedTags.length > 0) {
           questions = await fetchQuestionsWithTags(selectedTags);
         } else {
@@ -46,15 +49,15 @@ const HomeQuestions: FC<{
       } else {
         questions = personalQuestions?.results;
 
-        if (searchQuery) {
+        if (debouncedSearchQuery) {
           questions = questions?.filter(
             (question) =>
               question.title
                 .toLowerCase()
-                .includes(searchQuery.toLowerCase()) ||
+                .includes(debouncedSearchQuery.toLowerCase()) ||
               question.description
                 .toLowerCase()
-                .includes(searchQuery.toLowerCase())
+                .includes(debouncedSearchQuery.toLowerCase())
           );
         }
 
@@ -75,7 +78,7 @@ const HomeQuestions: FC<{
   }, [
     activeTab,
     selectedTags,
-    searchQuery,
+    debouncedSearchQuery,
     generalQuestions,
     personalQuestions,
   ]);
